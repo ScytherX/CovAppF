@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "894877809418",
+    "project_id": "cov-app-34bec",
+    "storage_bucket": "cov-app-34bec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894877809418:android:53b3bd34e586de395798f3",
+        "android_client_info": {
+          "package_name": "com.covapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "894877809418-dml5buitd9radp079e9i8o3e7kr0rfjl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.covapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "894877809418-d2ertjl8akhfgpbd0s5jnd5iqdmgrpq2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeo-parU0QjfQ34IlJ4KCp8q5etPvnNEM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "894877809418-d2ertjl8akhfgpbd0s5jnd5iqdmgrpq2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
