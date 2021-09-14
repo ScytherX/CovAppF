@@ -10,22 +10,19 @@ import CreateUserScreen from "./screens/CreateUserScreen";
 
 const lang = ["Español", "English", "Français", "中国人"]//Languages in which the application will be available
 
-const logOut = () => {
-  auth() //Funcion for close session
-    .signOut()
-    .then(() => {
-      console.log('User signed out!');
-      navigation.navigate('LogInScreen');
-    });
-}
+var usert = null;
 
 function LogInScreen({ navigation }) { //Log in screen
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
 
-  const logIn = ({ navigation }) => {
-    createUser(email, pass)
-    navigation.navigate("Home")
+  const logIn = () => {
+    auth().signInWithEmailAndPassword(email,pass);
+    usert = auth().currentUser.email;
+    console.log(`${usert} ha iniciado sesión.`)
+    navigation.navigate("Home",{
+      params: { user: usert },
+    });
   }
 
   return (
@@ -66,7 +63,7 @@ function SignUpScreen({ navigation }) {//Registration screen
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
 
-  const signup = ({ navigation }) => {
+  const signup = () => {
     createUser(email, pass)
     navigation.navigate("Home")
   }
@@ -120,14 +117,16 @@ function SignUpScreen({ navigation }) {//Registration screen
   );
 }
 
-function HomeScreen({ navigation }) {//Registration screen
+function HomeScreen({ route,navigation }) {//Registration screen
+
+  
 
   return (
     <View>
 
       <View style={styles.texPadCurp}>
         <Text style={styles.txmain}>Curp</Text>
-        <Text style={styles.texC}>HEMJ820709MMIRNS08</Text>
+        <Text style={styles.texC}>{usert}</Text>
       </View>
 
       <View style={styles.txDosis}>
@@ -145,6 +144,16 @@ function HomeScreen({ navigation }) {//Registration screen
 
 
 function SettScreen({ navigation }) {//Configuration screen, where you can log out and change the language of the application.
+
+  const logOut = () => {
+    auth() //Funcion for close session
+      .signOut()
+      .then(() => {
+        console.log('User signed out!');
+        navigation.navigate('LogInScreen');
+      });
+  }
+
   return (
     <View style={{
       justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffff',
