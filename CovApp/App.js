@@ -65,13 +65,17 @@ function SignUpScreen({ navigation }) {//Registration screen
 
   const signup = () => {
     createUser(email, pass)
-    navigation.navigate("Home")
+    navigation.navigate("Home",{
+      params: { user: usert },
+    });
   }
 
   const createUser = (email, pass) => {
     auth()//Function for create new users
       .createUserWithEmailAndPassword(email, pass)
       .then(() => {
+        usert = auth().currentUser.email;
+        console.log(`${usert} ha iniciado sesión.`)
         console.log('User account created & signed in!');
         setEmail('');
         setPass('');
