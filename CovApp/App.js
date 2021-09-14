@@ -10,32 +10,6 @@ import CreateUserScreen from "./screens/CreateUserScreen";
 
 const lang = ["Español", "English", "Français", "中国人"]//Languages in which the application will be available
 
-const createUser = (email, pass) => {
-  auth()//Function for create new users
-    .createUserWithEmailAndPassword(email, pass)
-    .then(() => {
-      console.log('User account created & signed in!');
-      setEmail('');
-      setPass('');
-      navigation.navigate('HomeScreen') // Si se crea el usuario, entrar al home
-    })
-    .catch(error => {
-      if (error.code === 'auth/email-already-in-use') {
-        console.log('That email address is already in use!');
-      }
-
-      if (error.code === 'auth/invalid-email') {
-        console.log('That email address is invalid!');
-      }
-
-      console.error(error);
-    });
-}
-
-const logIn = ({ navigation }) => {
-  createUser(email, pass)
-}
-
 const logOut = () => {
   auth() //Funcion for close session
     .signOut()
@@ -48,6 +22,11 @@ const logOut = () => {
 function LogInScreen({ navigation }) { //Log in screen
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
+
+  const logIn = ({ navigation }) => {
+    createUser(email, pass)
+    navigation.navigate("Home")
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: '#ffffff', justifyContent: 'center', alignItems: 'center' }}>
@@ -69,7 +48,7 @@ function LogInScreen({ navigation }) { //Log in screen
       </View>
 
       <Button title="Sign In" style={styles.Button}
-        onPress={() => navigation.navigate("Home")}
+        onPress={logIn}
       />
 
       <View style={styles.btnSepa}></View>
@@ -86,6 +65,32 @@ function LogInScreen({ navigation }) { //Log in screen
 function SignUpScreen({ navigation }) {//Registration screen
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
+
+  const signup = ({ navigation }) => {
+    createUser(email, pass)
+    navigation.navigate("Home")
+  }
+
+  const createUser = (email, pass) => {
+    auth()//Function for create new users
+      .createUserWithEmailAndPassword(email, pass)
+      .then(() => {
+        console.log('User account created & signed in!');
+        setEmail('');
+        setPass('');
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!');
+        }
+  
+        if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!');
+        }
+  
+        console.error(error);
+      });
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: '#ffffff', justifyContent: 'center', alignItems: 'center' }}>
@@ -106,8 +111,10 @@ function SignUpScreen({ navigation }) {//Registration screen
         ></TextInput>
       </View>
 
-      <Button title="Sign Up" style={styles.Button}
-        onPress={() => navigation.navigate("Home"), logIn}
+      <Button
+        title="Sign Up"
+        style={styles.Button}
+        onPress={signup}
       />
     </View>
   );
