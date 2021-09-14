@@ -6,9 +6,9 @@ import { Stack, createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import auth from '@react-native-firebase/auth';
+import CreateUserScreen from "./screens/CreateUserScreen";
 
 const lang = ["Español", "English", "Français", "中国人"]//Languages in which the application will be available
-// const [state, setState] = useState(initalState);
 
 const createUser = (email, pass) => {
   auth()//Function for create new users
@@ -33,7 +33,7 @@ const createUser = (email, pass) => {
 }
 
 const logIn = ({ navigation }) => {
-  navigation.navigate("Home")
+  createUser(email, pass)
 }
 
 const logOut = () => {
@@ -107,14 +107,14 @@ function SignUpScreen({ navigation }) {//Registration screen
       </View>
 
       <Button title="Sign Up" style={styles.Button}
-        onPress={() => createUser(email, pass), logIn}
+        onPress={() => navigation.navigate("Home"), logIn}
       />
     </View>
   );
 }
 
+function HomeScreen({ navigation }) {//Registration screen
 
-const HomeScreen = ({ navigation }) => {//Main screen showing information about the doses applied and the date when they were applied.
   return (
     <View>
 
@@ -128,26 +128,16 @@ const HomeScreen = ({ navigation }) => {//Main screen showing information about 
         <Text style={styles.txDo2}>Dose 2</Text>
       </View>
 
+      <Button title="S.O.S." style={styles.Button}
+        onPress={() => navigation.navigate("Configuracion")}
+      />
+
     </View>
   );
 }
 
-const check = () => {//Checkbox to be used in the main screen to keep track of the doses (does not work).
-  const [isSelected, setSelection] = useState(false);
-  return (
-    <View style={styles.container}>
-      <View style={styles.checkboxContainer}>
-        <CheckBox
-          value={isSelected}
-          onValueChange={setSelection}
-          style={styles.checkbox}
-        />
-      </View>
-    </View>
-  );
-}
 
-function SettingsScreen({ navigation }) {//Configuration screen, where you can log out and change the language of the application.
+function SettScreen({ navigation }) {//Configuration screen, where you can log out and change the language of the application.
   return (
     <View style={{
       justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffff',
@@ -170,70 +160,21 @@ function SettingsScreen({ navigation }) {//Configuration screen, where you can l
           }}
         />
       </View>
+
+      <Button title="Home" onPress={
+        navigation.navigate('Home')
+      } />
+
+
       <Button title="Log Out" style={{
         position: 'absolute', width: 300, height: 40,
         left: 58, top: 460,
       }}
-        onPress={() => logOut, navigation.navigate('LogIn')}
+        onPress={() => logOut}
       />
 
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-
-            if (route.name === 'Home') {
-              iconName = focused//Icons that appear to access the home screen
-                ? 'ios-person-outline'
-                : 'ios-person-outline';
-            } else if (route.name === 'Settings') {
-              iconName = focused//Icons that appear to access the settings screen
-                ? 'cog-outline'
-                : 'cog-outline';
-            }
-
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-        })}
-        tabBarOptions={{//Colors displayed when active or inactive
-          activeTintColor: 'red',
-          inactiveTintColor: 'black',
-        }}
-      >
-        <Tab.Screen name="Home" component={HomeStackScreen} />{/*Button to access the HomeScreen or also called the main screen.*/}
-        <Tab.Screen name="Settings" component={SettingsStackScreen} />{/*Button to access the SettingsScreen*/}
-      </Tab.Navigator>
     </View>
   );
-}
-
-function tabNav (){
-  <Tab.Navigator independent={true}
-  ScreenOptions={({ route }) => ({
-    tabBarIcon: ({ focused, color, size }) => {
-      let iconName;
-
-      if (route.name === 'Home') {
-        iconName = focused//Icons that appear to access the home screen
-          ? 'ios-person-outline'
-          : 'ios-person-outline';
-      } else if (route.name === 'Settings') {
-        iconName = focused//Icons that appear to access the settings screen
-          ? 'cog-outline'
-          : 'cog-outline';
-      }
-
-      return <Ionicons name={iconName} size={size} color={color} />;
-    },
-  })}
-  tabBarOptions={{//Colors displayed when active or inactive
-    activeTintColor: 'red',
-    inactiveTintColor: 'black',
-  }}
->
-  <Tab.Screen name="Home" component={HomeStackScreen} />{/*Button to access the HomeScreen or also called the main screen.*/}
-  <Tab.Screen name="Settings" component={SettingsStackScreen} />{/*Button to access the SettingsScreen*/}
-</Tab.Navigator>
 }
 
 const HomeStack = createStackNavigator();
@@ -241,11 +182,9 @@ const HomeStack = createStackNavigator();
 function HomeStackScreen() {//Hides headers and links components
   return (
     <NavigationContainer>
-      <HomeStack.Navigator >
-        <HomeStack.Screen name="Home" style={styles.txUpBar} component={HomeScreen}
-          Options={{ headerShown: false }}
-        />
-        <HomeStack.Screen name="Settings" component={SettingsScreen} />
+      <HomeStack.Navigator>
+        <HomeStack.Screen name="Home" component={HomeScreen} />
+        <HomeStack.Screen name="Configuracion" component={SettScreen} />
       </HomeStack.Navigator>
     </NavigationContainer>
   );
@@ -257,9 +196,7 @@ function LogStackScreen() {//Hides headers and links components
   return (
     <NavigationContainer>
       <LogStack.Navigator ScreenOptions={{ headerShown: false }}>
-        <LogStack.Screen name="Log In" component={LogInScreen}
-
-        />
+        <LogStack.Screen name="Log In" component={LogInScreen} />
         <LogStack.Screen name="Home" component={HomeScreen} />
         <LogStack.Screen name="Sign Up" component={SignUpScreen} />
       </LogStack.Navigator>
@@ -272,26 +209,27 @@ const SignStack = createStackNavigator();
 function SignStackScreen() {//Hides headers and links components
   return (
     <NavigationContainer>
-      <SignStack.Navigator screenOptions={{ headerShown: false }}>
+      <SignStack.Navigator>
         <SignStack.Screen name="Sign Up" component={SignUpScreen} />
-        <LogStack.Screen name="Home" component={HomeScreen} />
+        <SignStack.Screen name="Home" component={HomeScreen} />
       </SignStack.Navigator>
     </NavigationContainer>
   );
 }
 
-const SettingsStack = createStackNavigator();
+const SettStack = createStackNavigator();
 
-function SettingsStackScreen() {//Hide header and link component
+function SetStackScreen() {//Hide header and link component
   return (
-    <SettingsStack.Navigator screenOptions={{ headerShown: false }}>
-      <SettingsStack.Screen name="Settings" component={SettingsScreen} />
-      <SettingsStack.Screen name="Home" component={HomeScreen} />
-    </SettingsStack.Navigator>
+    <NavigationContainer>
+      <SettStack.Navigator>
+        <SettStack.Screen name="Set" component={SettScreen} />
+        <SettStack.Screen name="Home" component={HomeScreen} />
+        <SettStack.Screen name="Log In" component={LogInScreen} />
+      </SettStack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
@@ -339,7 +277,7 @@ const styles = StyleSheet.create({ //Styles that are used in the app
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    paddingTop: 260,
+    paddingTop: 210,
   },
   txUpBar: {
     color: '#ffffff'
