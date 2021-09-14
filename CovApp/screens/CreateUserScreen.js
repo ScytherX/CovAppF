@@ -7,8 +7,6 @@ import {
   ScrollView,
 } from "react-native";
 
-import firebase from "../database/firebase";
-
 const AddUserScreen = (props) => {
   const initalState = {
     name: "",
