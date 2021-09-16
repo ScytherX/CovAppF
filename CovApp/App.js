@@ -123,8 +123,6 @@ function SignUpScreen({ navigation }) {//Registration screen
 
 function HomeScreen({ route,navigation }) {//Registration screen
 
-  
-
   return (
     <View>
 
@@ -138,7 +136,7 @@ function HomeScreen({ route,navigation }) {//Registration screen
         <Text style={styles.txDo2}>Dose 2</Text>
       </View>
 
-      <Button title="S.O.S." style={styles.Button}
+      <Button title="Settings" style={styles.Button}
         onPress={() => navigation.navigate("Configuracion")}
       />
 
